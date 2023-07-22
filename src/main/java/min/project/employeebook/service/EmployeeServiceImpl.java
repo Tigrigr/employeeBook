@@ -10,12 +10,16 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.apache.commons.lang3.StringUtils.capitalize;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     final int maxEmployees = 10;
     private final Map<String, Employee> employees;
+    private final EmployeeValidationService employeeValidationService;
 
-    public EmployeeServiceImpl() {
+    public EmployeeServiceImpl(EmployeeValidationService employeeValidationService) {
+        this.employeeValidationService = employeeValidationService;
         this.employees = new HashMap<>();
 
         addEmployee("Petrov", "Petr", 11111, 1);
@@ -33,7 +37,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee addEmployee(String firstName, String lastName, int salary, int departamentID) {
-        Employee employee = new Employee(firstName, lastName, salary, departamentID);
+        employeeValidationService.validate(firstName, lastName);
+        Employee employee = new Employee(capitalize(firstName), capitalize(lastName), salary, departamentID);
         if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException();
         }
