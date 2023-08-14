@@ -20,25 +20,25 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Employee findEmployeeMaxSalary(int departmentID) {
+    public Employee findEmployeeMaxSalary(int departmentId) {
         return employeeService.findAll().stream()
-                .filter(e -> e.getDepartamentId() == departmentID)
+                .filter(e -> e.getDepartamentId() == departmentId)
                 .max(Comparator.comparingInt(Employee::getSalary))
                 .orElseThrow(EmployeeNotFoundException::new);
     }
 
     @Override
-    public Employee findEmployeeMinSalary(int departmentID) {
+    public Employee findEmployeeMinSalary(int departmentId) {
         return employeeService.findAll().stream()
-                .filter(e -> e.getDepartamentId() == departmentID)
+                .filter(e -> e.getDepartamentId() == departmentId)
                 .min(Comparator.comparingInt(Employee::getSalary))
                 .orElseThrow(EmployeeNotFoundException::new);
     }
 
     @Override
-    public Collection<Employee> findEmployeeFromDepartment(int departmentID) {
+    public Collection<Employee> findEmployeeFromDepartment(int departmentId) {
         return employeeService.findAll().stream()
-                .filter(e -> e.getDepartamentId() == departmentID)
+                .filter(e -> e.getDepartamentId() == departmentId)
                 .collect(Collectors.toList());
     }
 
@@ -46,5 +46,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Map<Integer, List<Employee>> findAllEmployees() {
         return employeeService.findAll().stream()
                 .collect(Collectors.groupingBy(Employee::getDepartamentId));
+    }
+
+    @Override
+    public Integer getDepartmentSalarySum(int departmentId) {
+        return employeeService.findAll().stream()
+                .filter(e -> e.getDepartamentId() == departmentId)
+                .mapToInt(Employee::getSalary).sum();
     }
 }

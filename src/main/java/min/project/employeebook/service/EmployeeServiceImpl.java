@@ -21,24 +21,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeServiceImpl(EmployeeValidationService employeeValidationService) {
         this.employeeValidationService = employeeValidationService;
         this.employees = new HashMap<>();
-
-        addEmployee("Petrov", "Petr", 11111, 1);
-        addEmployee("Petrov", "Petr", 22222, 2);
-        addEmployee("Petrov", "Petr", 33333, 3);
-        addEmployee("Petrov", "Petr", 44444, 4);
-        addEmployee("Petrov", "Petr", 55555, 5);
-        addEmployee("Petrov", "Petr", 66666, 1);
-        addEmployee("Petrov", "Petr", 77777, 2);
-        addEmployee("Petrov", "Petr", 88888, 3);
-        addEmployee("Petrov", "Petr", 99999, 4);
-
     }
 
 
     @Override
-    public Employee addEmployee(String firstName, String lastName, int salary, int departamentID) {
+    public Employee addEmployee(String firstName, String lastName, int salary, int departmentID) {
         employeeValidationService.validate(firstName, lastName);
-        Employee employee = new Employee(capitalize(firstName), capitalize(lastName), salary, departamentID);
+        Employee employee = new Employee(capitalize(firstName), capitalize(lastName), salary, departmentID);
         if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException();
         }
@@ -51,7 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee delEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+        Employee employee = findEmployee(firstName, lastName);
         if (!employees.containsKey(employee.getFullName())) {
             throw new EmployeeNotFoundException();
         }
@@ -61,11 +50,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
-        if (!employees.containsKey(employee.getFullName())) {
+        String fullNameKey = firstName + " " + lastName;
+        if (!employees.containsKey(fullNameKey)) {
             throw new EmployeeNotFoundException();
         }
-        return employee;
+        return employees.get(fullNameKey);
     }
 
     @Override

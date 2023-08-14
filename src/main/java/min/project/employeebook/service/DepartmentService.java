@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 public interface DepartmentService {
-    Employee findEmployeeMaxSalary(int departmentID);
+    Employee findEmployeeMaxSalary(int departmentId);
 
-    Employee findEmployeeMinSalary(int departmentID);
+    Employee findEmployeeMinSalary(int departmentId);
 
-    Collection<Employee> findEmployeeFromDepartment(int departmentID);
+    Collection<Employee> findEmployeeFromDepartment(int departmentId);
 
     Map<Integer, List<Employee>> findAllEmployees();
+
+    Integer getDepartmentSalarySum(int departmentId);
 }

@@ -2,17 +2,14 @@ package min.project.employeebook.controller;
 
 import min.project.employeebook.data.Employee;
 import min.project.employeebook.service.DepartmentService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/departments")
+@RequestMapping("/department")
 public class DepartmentController {
     private final DepartmentService departmentService;
 
@@ -20,22 +17,26 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
-    @GetMapping("/max-salary")
-    public Employee findEmployeeMaxSalary(@RequestParam int departmentId) {
+    @GetMapping("/{departmentId}/salary/max")
+    public Employee findEmployeeMaxSalary(@PathVariable int departmentId) {
         return departmentService.findEmployeeMaxSalary(departmentId);
     }
 
-    @GetMapping("/min-salary")
-    public Employee findEmployeeMinSalary(@RequestParam int departmentId) {
+    @GetMapping("/{departmentId}/salary/min")
+    public Employee findEmployeeMinSalary(@PathVariable int departmentId) {
         return departmentService.findEmployeeMinSalary(departmentId);
     }
-
-    @GetMapping(value = "all", params = "departmentID")
-    public Collection<Employee> findEmployeeFromDepartment(@RequestParam int departmentID) {
-        return departmentService.findEmployeeFromDepartment(departmentID);
+    @GetMapping("/{departmentId}/salary/sum")
+    public Integer getDepartmentSalarySum(@PathVariable int departmentId) {
+        return departmentService.getDepartmentSalarySum(departmentId);
     }
 
-    @GetMapping("all")
+    @GetMapping("/{departmentId}/employees")
+    public Collection<Employee> findEmployeeFromDepartment(@PathVariable int departmentId) {
+        return departmentService.findEmployeeFromDepartment(departmentId);
+    }
+
+    @GetMapping("employees")
     public Map<Integer, List<Employee>> findAllEmployees() {
         return departmentService.findAllEmployees();
     }
